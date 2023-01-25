@@ -1,5 +1,4 @@
 export type DatabaseBuilder = {
-  id: string;
   created_at: string;
   username: string
   discord_id: string;

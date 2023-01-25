@@ -32,7 +32,7 @@ const createPost: NextApiHandler = async (req, res) => {
   const { data, error } = await client.from("posts").insert({ description, builder, tags }).select("*")
 
   if (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", error });
     return;
   }
   res.status(201).json({ data });
