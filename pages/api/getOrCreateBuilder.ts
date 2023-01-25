@@ -11,13 +11,14 @@ const cors = Cors({
 // returns a 201 with the new builder object on success
 const getOrCreateBuilder: NextApiHandler = async (req, res) => {
   await runMiddleware(req, res, cors)
+  const body = JSON.parse(req.body);
 
   const builderSchema = z.object({
     username: z.string().max(32),
     discord_id: z.string().length(18),
   })
 
-  const object = builderSchema.safeParse(req.body);
+  const object = builderSchema.safeParse(body);
 
   if (!object.success) {
     res.status(400).json({ message: "Invalid request body", error: object.error });

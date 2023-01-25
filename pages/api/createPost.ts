@@ -1,6 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
-import { z } from "zod";
+import { string, z } from "zod";
 import Cors from 'cors'
 import runMiddleware from "@/utils/runMiddleware";
 
@@ -13,14 +13,16 @@ const cors = Cors({
 // returns a 201 with the new post object on success
 const createPost: NextApiHandler = async (req, res) => {
   await runMiddleware(req, res, cors)
+  const body = JSON.parse(req.body);
 
   const postSchema = z.object({
     content: z.string(),
     builder: z.string(),
     tags: z.array(z.string()),
+    title: z.string(),
   })
 
-  const object = postSchema.safeParse(req.body);
+  const object = postSchema.safeParse(body);
 
   if (!object.success) {
     res.status(400).json({ message: "Invalid request body", error: object.error });

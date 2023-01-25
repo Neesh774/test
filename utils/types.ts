@@ -13,11 +13,13 @@ export type DatabasePost = {
   id: string;
   created_at: string;
   content: string;
+  title: string;
   builder: DatabaseBuilder;
   tags: string[];
 }
 
 export type NewPost = {
+  title: string;
   content: string;
   builder: string;
   tags: string[];
