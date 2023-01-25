@@ -19,7 +19,7 @@ const getBuilder: NextApiHandler = async (req, res) => {
   const object = builderIdSchema.safeParse(req.body);
 
   if (!object.success) {
-    res.status(400).json({ message: "Invalid request body" });
+    res.status(400).json({ message: "Invalid request body", error: object.error });
     return;
   }
   const { discord_id } = object.data;
