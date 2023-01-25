@@ -7,8 +7,6 @@ const cors = Cors({
   methods: ['POST'],
 })
 
-// expects a request body of { username: string, discord_id: string }
-// returns a 201 with the new builder object on success
 const getOrCreateBuilder: NextApiHandler = async (req, res) => {
   await runMiddleware(req, res, cors)
   const body = JSON.parse(req.body);

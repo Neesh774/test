@@ -9,8 +9,6 @@ const cors = Cors({
 })
 
 
-// expects a request body of { description: string, builder: string, tags: string[] }
-// returns a 201 with the new post object on success
 const createPost: NextApiHandler = async (req, res) => {
   await runMiddleware(req, res, cors)
   const body = JSON.parse(req.body);
