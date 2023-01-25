@@ -18,7 +18,7 @@ export default function Home() {
         {posts ? (
           posts.map((post) => (
             <li key={post.id}>
-              <a href={`/posts/${post.id}`}>{post.description}</a>
+              <a href={`/posts/${post.id}`}>{post.content}</a>
             </li>
           ))
         ) : (
