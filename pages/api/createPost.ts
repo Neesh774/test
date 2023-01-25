@@ -15,7 +15,7 @@ const createPost: NextApiHandler = async (req, res) => {
   await runMiddleware(req, res, cors)
 
   const postSchema = z.object({
-    description: z.string(),
+    content: z.string(),
     builder: z.string(),
     tags: z.array(z.string()),
   })
@@ -26,10 +26,10 @@ const createPost: NextApiHandler = async (req, res) => {
     res.status(400).json({ message: "Invalid request body" });
     return;
   }
-  const { description, builder, tags } = object.data;
+  const { content, builder, tags } = object.data;
 
   const client = new SupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.SUPABASE_SERVICE_KEY as string);
-  const { data, error } = await client.from("posts").insert({ description, builder, tags }).select("*")
+  const { data, error } = await client.from("posts").insert({ content, builder, tags }).select("*")
 
   if (error) {
     res.status(500).json({ message: "Internal server error", error });
