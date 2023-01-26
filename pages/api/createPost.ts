@@ -11,7 +11,6 @@ const cors = Cors({
 
 const createPost: NextApiHandler = async (req, res) => {
   await runMiddleware(req, res, cors)
-  const body = JSON.parse(req.body);
 
   const postSchema = z.object({
     content: z.string(),
