@@ -28,7 +28,7 @@ const createPost: NextApiHandler = async (req, res) => {
   const { title, content, builder, tags } = object.data;
 
   const client = new SupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.SUPABASE_SERVICE_KEY as string);
-  const { data, error } = await client.from("posts").insert({ title, content, builder, tags }).select("*")
+  const { data, error } = await client.from("posts").insert({ title, content, builder, tags }).select("*").single();
 
   if (error) {
     res.status(500).json({ message: "Internal server error", error, data: null });
