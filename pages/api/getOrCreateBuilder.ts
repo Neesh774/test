@@ -9,17 +9,16 @@ const cors = Cors({
 
 const getOrCreateBuilder: NextApiHandler = async (req, res) => {
   await runMiddleware(req, res, cors)
-  const body = JSON.parse(req.body);
 
   const builderSchema = z.object({
     username: z.string().max(32),
     discord_id: z.string().length(18),
   })
 
-  const object = builderSchema.safeParse(body);
+  const object = builderSchema.safeParse(req.body);
 
   if (!object.success) {
-    res.status(400).json({ message: "Invalid request body", error: object.error });
+    res.status(400).json({ message: "Invalid request body", error: object.error, data: null });
     return;
   }
   const { username, discord_id } = object.data;
@@ -29,11 +28,11 @@ const getOrCreateBuilder: NextApiHandler = async (req, res) => {
   const { data, error } = await client.from("builders").upsert({ username, discord_id }).select().single();
 
   if (error) {
-    res.status(500).json({ message: "Internal server error", error });
+    res.status(500).json({ message: "Internal server error", error, data: null });
     console.error(error)
     return;
   }
-  res.status(201).json({ data });
+  res.status(200).json({ data, message: "Success", error: null });
 }
 
 export default getOrCreateBuilder;

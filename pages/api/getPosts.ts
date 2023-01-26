@@ -13,11 +13,11 @@ const getPosts: NextApiHandler = async (req, res) => {
   const { data, error } = await client.from("posts").select("*");
 
   if (error) {
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", error, data: null });
     return;
   }
 
-  res.status(201).json({ data });
+  res.status(200).json({ data, message: "Success", error: null });
 }
 
 export default getPosts;
