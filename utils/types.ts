@@ -16,6 +16,7 @@ export type DatabasePost = {
   title: string;
   builder: DatabaseBuilder;
   tags: string[];
+  media: string[];
 }
 
 export type NewPost = {

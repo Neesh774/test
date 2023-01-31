@@ -28,7 +28,7 @@ const uploadPostMedia: NextApiHandler = async (req, res) => {
   const { mediaURLs, post_id } = object.data;
 
   const client = new SupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL as string, process.env.SUPABASE_SERVICE_KEY as string);
-  await Promise.all(mediaURLs.map(async (mediaURL) => {
+  const fileNames = await Promise.all(mediaURLs.map(async (mediaURL) => {
     const fileName = mediaURL.split('/').pop() as string;
     const blob = await fetch(mediaURL).then(r => r.blob())
     const { data, error } = await client.storage.from('post-media').upload(`${post_id}/${fileName}`, blob, {
@@ -38,9 +38,12 @@ const uploadPostMedia: NextApiHandler = async (req, res) => {
       res.status(500).json({ message: "Internal server error", error, data: null });
       return;
     }
+    return fileName;
   }))
 
-  res.status(200).json({ message: "Success", error: null, data: null });
+  await client.from("posts").update({ media: fileNames }).eq("id", post_id);
+
+  res.status(200).json({ message: "Success", error: null, data: fileNames });
 }
 
 export default uploadPostMedia;
